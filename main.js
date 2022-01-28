@@ -9,3 +9,31 @@ timer_check = "";
 drawn_sketch = "";
 answer_holder = "";
 score = 0;
+
+function updateCanvas() {
+    random_number = Math.floor((Math.random() * quick_draw_data_set.length) + 1);
+    sketch = quick_draw_data_set[random_number];
+    document.getElementById('sketch_name').innerHTML = 'Sketch to be drawn: ' + sketch;
+}
+function preload() {
+    classifier = ml5.imageClassifier('DoodleNet');
+}
+function setup() {
+    canvas = createCanvas(280, 280);
+    canvas.center();
+    background("white");
+    canvas.mouseReleased(classifyCanvas);
+}
+function draw() {
+    strokeWeight(13);
+    stroke(0);
+    if (mouseIsPressed) {
+        line(pmouseX, pmouseY, mouseX, mouseY);
+    }
+    check_sketch()
+    if (drawn_sketch == sketch) {
+        answer_holder = "set";
+        score++;
+        document.getElementById('score').innerHTML = 'Score: ' + score;
+    }
+}
